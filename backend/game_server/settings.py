@@ -37,9 +37,30 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework', #REST framework
+    'corsheaders', # CORS headers
+
+    'evo_game', # 自己的app
 ]
 
+CORS_ALLOW_ORIGINS = ['http://localhost:5173'] #讓django可以接受這個react打過來的api，亦可使用ENV代入
+# 如果你想開發時完全不受限，可暫時這樣設定（生產環境要小心！）
+# CORS_ALLOW_ALL_ORIGINS = True
+
+# 如果前端會傳送自訂 Header 或 Cookie，可能還要加：
+# 允許自訂請求標頭
+# from corsheaders.defaults import default_headers
+# CORS_ALLOW_HEADERS = list(default_headers) + [
+#     'your-custom-header',
+# ]
+#
+# 允許瀏覽器攜帶 Cookie
+# CORS_ALLOW_CREDENTIALS = True
+
+# Middleware
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -120,3 +141,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
